@@ -48,7 +48,7 @@
 <hr>
         
                 <!-- Blog Comments -->
-                <?php 
+                <?php //ADD COMMENTS
                     if(isset($_POST['create_comment'])){
                         $post_id = $_GET['p_id'];
                         $comment_author = $_POST['comment_author'];
@@ -96,7 +96,7 @@
 
                 <!-- Posted Comments -->
 
-            <?php 
+            <?php //DISPLAY COMMENTS
                 $query = "SELECT * FROM comments WHERE comment_post_id = $post_id AND comment_status = 'approved' ORDER BY comment_id DESC";
     
                 $select_comment_query = mysqli_query($connection, $query);
