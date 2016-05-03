@@ -13,7 +13,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            Nick's Admin
+                            <?php echo $_SESSION['username']; ?>'s Admin
                             <small>PHP is cool!</small>
                         </h1>
                     </div>
