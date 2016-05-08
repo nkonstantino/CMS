@@ -20,7 +20,7 @@
         $create_user_query = mysqli_query($connection, $query);
         
         confirm($create_user_query);
-        
+        echo "<h2>User Created</h2>";
     }
 
 ?>
