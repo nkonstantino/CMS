@@ -44,6 +44,8 @@ if(isset($_POST['update_post'])){
     
     confirm($update_post);
     
+    echo "<p class='bg-success'><a href='../post.php?p_id={$p_id}'>View Updated Post</a></p>";
+    
 }
 ?>
 
