@@ -47,7 +47,7 @@ if($_SESSION['role'] !== "admin"){
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     
     <script src="http://cdn.tinymce.com/4/tinymce.min.js"></script>
-    <script src="js/scripts.js"></script>
+
 </head>
 
 <body>

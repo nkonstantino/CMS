@@ -1,9 +1,27 @@
 <?php
     if(isset($_POST['checkBoxArray'])){
-        foreach($_POST['checkBoxArray'] as $checkBoxValue){
-            $bulk_options = $_POST['checkBoxArray'];
+        foreach($_POST['checkBoxArray'] as $postValueId){
+            $bulk_options = $_POST['bulk_options'];
+            switch($bulk_options){
+                    
+                case 'published':
+                    $query = "UPDATE posts SET post_status = '{$bulk_options}' WHERE post_id = {$postValueId}";
+                    
+                    $bulk_publish_Query = mysqli_query($connection, $query);
+                break;
+                case 'draft':
+                    $query = "UPDATE posts SET post_status = '{$bulk_options}' WHERE post_id = {$postValueId}";
+                    
+                    $bulk_draft_Query = mysqli_query($connection, $query);
+                break;
+                case 'delete':
+                    $query = "DELETE FROM posts WHERE post_id = {$postValueId} ";
+                    $bulk_delete_Query = mysqli_query($connection, $query);
+                break;
+                    
+                    
+            }
         }
-        //$_POST['checkBoxArray']
     }
     
     
@@ -19,14 +37,13 @@
                    
                    <select class="form-control" name="bulk_options" id="">
                        <option value="">Select Options</option>
-                       <option value="">Publish</option>
-                       <option value="">Draft</option>
-                       <option value="">Delete</option>
+                       <option value="published">Publish</option>
+                       <option value="draft">Draft</option>
+                       <option value="delete">Delete</option>
                    </select>
-                   <input type="submit" name="submit" class="btn btn-success" value="Apply">
-                   <a class="btn btn-primary" href="add_post.php">Add New</a>    
                </div>
-
+                   <input type="submit" name="submit" class="btn btn-success" value="Apply">
+                   <a class="btn btn-primary" href="posts.php?source=add_post">Add New</a>    
                
                 <thead>
                     <tr>
@@ -67,7 +84,7 @@
                     <?php
                         echo "<td>{$post_id}</td>";
                         echo "<td>{$post_author}</td>";
-                        echo "<td>{$post_title}</td>";
+                        echo "<td><a href='../post.php?p_id={$post_id}'>{$post_title}</a></td>";
                         
                         //DISPLAY CATEGORY TITLES
                         $query = "SELECT * FROM categories WHERE cat_id = $post_category_id";
