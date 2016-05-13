@@ -30,14 +30,14 @@ if (mysqli_num_rows($select_user_query)==0){ //if account doesn't exist:
         $db_user_lastname = $row['user_lastname'];
         $db_user_role = $row['user_role'];
     }
-    
+        $password = crypt($password, $db_user_password);
+        
     if($username === $db_user_name && $password === $db_user_password){//good login
         //set SESSION
         $_SESSION['username'] = $db_user_name;
         $_SESSION['firstname'] = $db_user_firstname;
         $_SESSION['lastname'] = $db_user_lastname;
         $_SESSION['role'] = $db_user_role;        
-        
         header("Location: ../admin");
     } else {//no match
         header("Location: ../index.php");

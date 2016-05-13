@@ -14,6 +14,8 @@ if(isset($_GET['u_id'])){
         $user_image = $row['user_image'];
         $user_role = $row['user_role'];
         $user_date = $row['user_date'];
+        $randSalt = $row['randSalt'];
+        $hashed_password = crypt($user_password, $randSalt);
     }
 
 if(isset($_POST['update_user'])){
@@ -39,8 +41,14 @@ if(isset($_POST['update_user'])){
             $user_image = $row['user_image'];
         }
     }
+        $query = "SELECT randSalt FROM users";
+        $select_randsalt_query = mysqli_query($connection, $query);
+        
+        $row = mysqli_fetch_array($select_randsalt_query);
+        $salt = $row['randSalt'];
+        $hashed_password = crypt($user_password, $salt);
     
-    $query = "UPDATE users SET user_name = '{$user_name}', user_password = '{$user_password}', user_firstname = '{$user_firstname}', user_lastname = '{$user_lastname}', user_email = '{$user_email}', user_image = '{$user_image}', user_role = '{$user_role}' WHERE user_id = {$user_id} ";
+    $query = "UPDATE users SET user_name = '{$user_name}', user_password = '{$hashed_password}', user_firstname = '{$user_firstname}', user_lastname = '{$user_lastname}', user_email = '{$user_email}', user_image = '{$user_image}', user_role = '{$user_role}' WHERE user_id = {$user_id} ";
     
     $update_user = mysqli_query($connection, $query);
     
@@ -61,7 +69,7 @@ if(isset($_POST['update_user'])){
     
        <div class="form-group">
         <label for="post_title">Password</label><br>
-        <input value="<?php echo $user_password; ?>" type="password" class="form_control" name="user_password">
+        <input placeholder="Enter Password" type="text" class="form_control" name="user_password">
     </div>
     
     <div class="form-group">

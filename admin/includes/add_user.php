@@ -14,8 +14,15 @@
         
         move_uploaded_file($user_image_temp, "../images/$user_image");
         
+        $query = "SELECT randSalt FROM users";
+        $select_randsalt_query = mysqli_query($connection, $query);
+        
+        $row = mysqli_fetch_array($select_randsalt_query);
+        $salt = $row['randSalt'];
+        $hashed_password = crypt($user_password, $salt);
+        
         $query = "INSERT INTO users(user_name,user_password,user_firstname,user_lastname,user_email,user_image,user_role, user_date) ";
-        $query .= "VALUES('{$user_name}','{$user_password}','{$user_firstname}', '{$user_lastname}','{$user_email}','{$user_image}','{$user_role}','now()' ) ";
+        $query .= "VALUES('{$user_name}','{$hashed_password}','{$user_firstname}', '{$user_lastname}','{$user_email}','{$user_image}','{$user_role}','now()' ) ";
         
         $create_user_query = mysqli_query($connection, $query);
         

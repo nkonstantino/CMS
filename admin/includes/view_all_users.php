@@ -38,7 +38,7 @@
                         echo "<td>{$user_date}</td>";
 
                         echo "<td><a href='users.php?source=edit_user&u_id={$user_id}'>Edit</a></td>";
-                        echo "<td><a href='users.php?delete={$user_id}'>Delete</a></td>";
+                        echo "<td><a onClick=\"javascript: return confirm('Are you sure you want to delete {$user_name}?'); \" href='users.php?delete={$user_id}'>Delete</a></td>";
 //                        echo "</tr>";
                     }
                     

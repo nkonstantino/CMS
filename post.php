@@ -8,6 +8,12 @@
         <?php
             if(isset($_GET['p_id'])){
                 $post_id = $_GET['p_id'];
+                $query = "SELECT * FROM posts where post_id = $post_id";
+            }
+            
+            if(isset($_GET['author_id'])){
+                $author_id = $_GET['author_id'];
+                $query = "SELECT * FROM posts WHERE post_author =  '{$author_id}' ";
             }
         ?>
             <!-- Blog Entries Column -->
@@ -17,10 +23,11 @@
                 </h1>
                 <!-- First Blog Post -->                       
             <?php 
-                    $query = "SELECT * FROM posts where post_id = $post_id";
+                    
                     $select_all_posts_query = mysqli_query($connection, $query);
                     
                     while($row = mysqli_fetch_assoc($select_all_posts_query)){
+                        $post_id = $row['post_id'];
                         $post_title = $row['post_title'];
                         $post_author = $row['post_author'];
                         $post_date = $row['post_date'];
@@ -49,7 +56,7 @@
                 <!-- Blog Comments -->
                 <?php //ADD COMMENTS
                     if(isset($_POST['create_comment'])){
-                        $post_id = $_GET['p_id'];
+                        
                         $comment_author = $_POST['comment_author'];
                         $comment_email = $_POST['comment_author'];
                         $comment_content = $_POST['comment_content'];
