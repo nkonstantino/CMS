@@ -8,13 +8,12 @@
         <?php
             if(isset($_GET['p_id'])){
                 $post_id = $_GET['p_id'];
+                
+                $view_query = "UPDATE posts SET post_views_count = post_views_count + 1 WHERE post_id = {$post_id} ";
+                $update_views = mysqli_query($connection, $view_query);
+                
                 $query = "SELECT * FROM posts where post_id = $post_id";
-            }
-            
-            if(isset($_GET['author_id'])){
-                $author_id = $_GET['author_id'];
-                $query = "SELECT * FROM posts WHERE post_author =  '{$author_id}' ";
-            }
+                
         ?>
             <!-- Blog Entries Column -->
                 <h1 class="page-header">
@@ -49,7 +48,9 @@
                 <p><?php echo $post_content; ?></p>
 
             </div>
-<?php } //close loop ?>
+<?php }} else{
+            header("Location:index.php");   
+            }//close loop ?>
             <!-- Blog Sidebar Widgets Column -->
 <hr>
         

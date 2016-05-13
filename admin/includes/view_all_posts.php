@@ -18,6 +18,17 @@
                     $query = "DELETE FROM posts WHERE post_id = {$postValueId} ";
                     $bulk_delete_Query = mysqli_query($connection, $query);
                 break;
+                case 'clone':
+                    $query = "INSERT INTO posts (post_title, post_category_id, post_date, post_author, post_status, post_image, post_tags, post_content) SELECT post_title, post_category_id, now(), post_author, post_status, post_image, post_tags, post_content from posts WHERE post_id = {$postValueId} ";
+                    
+                    $copy_post_query = mysqli_query($connection, $query);
+                    
+                    if(!$copy_post_query){
+                        die("query failed ". mysqli_error($connection));
+                    }
+                
+                
+                break;
                     
                     
             }
@@ -40,6 +51,7 @@
                        <option value="published">Publish</option>
                        <option value="draft">Draft</option>
                        <option value="delete">Delete</option>
+                       <option value="clone">Clone</option>
                    </select>
                </div>
                    <input type="submit" name="submit" class="btn btn-success" value="Apply">
@@ -57,6 +69,7 @@
                         <th>Tags</th>
                         <th>Comments</th>
                         <th>Date</th>
+                        <th>Views</th>
                         <th>Delete</th>
                         <th>Edit</th>
                     </tr>
@@ -76,6 +89,7 @@
                         $post_tags = $row['post_tags'];
                         $post_comments = $row['post_comment_count'];
                         $post_date = $row['post_date'];
+                        $post_views = $row['post_views_count'];
                         $post_content = $row['post_content'];
                     
                         echo "<tr>";
@@ -100,7 +114,8 @@
                         echo "<td><img width='100px' src='../images/$post_image'></td>";
                         echo "<td>{$post_tags}</td>";
                         echo "<td>{$post_comments}</td>";
-                        echo "<td>{$post_date}</td>"; 
+                        echo "<td>{$post_date}</td>";
+                        echo "<td><a onClick=\"javascript: return confirm('Are you sure you want to reset view count for {$post_title}?'); \" href='posts.php?reset={$post_id}'>{$post_views}</a></td>";
                         echo "<td><a onClick=\"javascript: return confirm('Are you sure you want to delete {$post_title}?'); \" href='posts.php?delete={$post_id}'>Delete</a></td>";
                         echo "<td><a href='posts.php?source=edit_post&p_id={$post_id}'>Edit</a></td>";
                         echo "</tr>";
@@ -120,6 +135,13 @@ if(isset($_GET['delete'])){ //DELETE SELECTED POST
     header("Location: posts.php");
 }
 
+if(isset($_GET['reset'])){ //DELETE SELECTED POST
+    $post_reset_id = $_GET['reset'];
+    $query = "UPDATE posts SET post_views_count = 0 WHERE post_id = {$post_reset_id}";
+    $resetquery = mysqli_query($connection, $query);
+    header("Location: posts.php");
+}
+    
 ?>
 
 

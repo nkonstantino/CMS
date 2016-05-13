@@ -14,7 +14,12 @@
                 </h1>
                 <!-- First Blog Post -->                       
             <?php 
+                if(isset($_GET['author_id'])){
+                $author_id = $_GET['author_id'];
+                $query = "SELECT * FROM posts WHERE post_author =  '{$author_id}' ";
+            }else{
                     $query = "SELECT * FROM posts";
+                }
                     $select_all_posts_query = mysqli_query($connection, $query);
                     
                     while($row = mysqli_fetch_assoc($select_all_posts_query)){
@@ -39,7 +44,7 @@
                     <a href="post.php?p_id=<?php echo $post_id ?>"><?php echo $post_title; ?></a>
                 </h2>
                 <p class="lead">
-                    by <a href="post.php?author_id=<?php echo $post_author ?>"><?php echo $post_author; ?></a>
+                    by <a href="index.php?author_id=<?php echo $post_author ?>"><?php echo $post_author; ?></a>
                 </p>
                 <p><span class="glyphicon glyphicon-time"></span><?php echo $post_date; ?></p>
                 <hr>
