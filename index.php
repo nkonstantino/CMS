@@ -15,10 +15,29 @@
                 <!-- First Blog Post -->                       
             <?php 
                 if(isset($_GET['author_id'])){
-                $author_id = $_GET['author_id'];
-                $query = "SELECT * FROM posts WHERE post_author =  '{$author_id}' ";
+                    $author_id = $_GET['author_id'];
+                    $query = "SELECT * FROM posts WHERE post_author =  '{$author_id}' ";
+                    $count_posts_query = "SELECT * FROM posts";
+                    $find_count = mysqli_query($connection,$count_posts_query);
+                    $post_count = mysqli_num_rows($find_count);
+                    
+                    $post_count = ceil($post_count / 5);
             }else{
-                    $query = "SELECT * FROM posts";
+                    $count_posts_query = "SELECT * FROM posts";
+                    $find_count = mysqli_query($connection,$count_posts_query);
+                    $post_count = mysqli_num_rows($find_count);
+                    
+                    $post_count = ceil($post_count / 5);
+                    
+                    $query = "SELECT * FROM posts ";
+                }
+                if(isset($_GET['page'])){
+                    $page = $_GET['page'];
+                    $page_posts = ($page * 5) - 5;
+                    $query = $query . "LIMIT $page_posts, 5";
+                }else{
+                    $page = "1";
+                    $query = $query . "LIMIT 0, 5";
                 }
                     $select_all_posts_query = mysqli_query($connection, $query);
                     
@@ -58,7 +77,26 @@
 <?php } } //close loop ?>
             <!-- Blog Sidebar Widgets Column -->
 
-
+        <hr>
+        <ul class="pager">
+        <?php 
+        for($i=1; $i <= $post_count; $i++){
+            if(isset($_GET['author_id'])){
+                if($i == $page){
+                    echo "<li><a class='active_link' href='index.php?author_id={$author_id}&page={$i}'>{$i}</a></li>";
+                }else{
+                    echo "<li><a href='index.php?author_id={$author_id}&page={$i}'>{$i}</a></li>";
+                }
+            }else{
+                if($i == $page){
+                    echo "<li><a class='active_link' href='index.php?page={$i}'>{$i}</a></li>";
+                }else{
+                    echo "<li><a href='index.php?page={$i}'>{$i}</a></li>";
+                }
+            }
+        }    
+        ?>
+        </ul>
         </div>
         <!-- /.row -->
 <?php 
@@ -66,7 +104,7 @@
     include "includes/sidebar.php"; 
 
 ?>
-        <hr>
+
 <?php 
 
     include "includes/footer.php"; 
